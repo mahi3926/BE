@@ -2,5 +2,5 @@
 $dbserver = 'localhost';
 $dbuser = 'admin';
 $dbpass = 'admin';
-$dbname = 'db';
+$dbname = 'nutri';
 ?>
