@@ -1,6 +1,6 @@
 <?php
 $dbserver = 'localhost';
-$dbuser = 'ps768';
-$dbpass = '*Family123';
+$dbuser = 'admin';
+$dbpass = 'admin';
 $dbname = 'db';
 ?>

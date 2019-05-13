@@ -181,19 +181,18 @@ function dodisplayfav($username)
   if ($mydb->errno != 0) 
   { echo "failed to connect to database: ". $mydb->error . PHP_EOL; exit(0); }
   else { echo "successfully connected to database".PHP_EOL; }
-
   $query = mysqli_query($mydb,"SELECT * FROM fav WHERE username = '$username'");
   $count = mysqli_num_rows($query);
   $showFav = "";
-
   if ($count >= 1)
   { 
       echo "USERS CREDENTIALS VERIFIED"; 
-     $showFav .= "<br> <table border=5 width=30% bgcolor='white'>";
+     $showFav .= "<br> <table style= 'text-align:center;' border=5 width=45% bgcolor='white'>";
      $showFav .= "<tr>";
-     $showFav .= "<td>Foodname</td>";
-     $showFav .= "<td>Calories</td>";
-     $showFav .= "<td>Delete Item</td>";
+     $showFav .= "<td><b>Foodname</b></td>";
+     $showFav .= "<td><b>Calories</b></td>";
+     $showFav .= "<td><b>Add To<br>Meal Plan</b></td>";
+     $showFav .= "<td><b>Delete Item</b></td>";
      $showFav .= "</tr>";
       while($r = mysqli_fetch_array ($query))
       {
@@ -202,6 +201,21 @@ function dodisplayfav($username)
 	$showFav .= "<tr>";
  	$showFav .= "<td>$foodname</td>";
         $showFav .= "<td>$calories</td>";
+        $showFav .= "<td><form action = 'addFavtoDay.php'>
+	<input type='hidden' name='food' value='$foodname'>
+	<input type='hidden' name='calories' value='$calories'>
+			 <select name = 'day' id = 'option'>
+      			 <option value = '' > Select Day         </option>
+     			 <option value = 'Monday' > Monday       </option>
+     			 <option value = 'Tuesday' > Tuesday     </option> 
+     			 <option value = 'Wednesday' > Wednesday </option>
+    			 <option value = 'Thursday' > Thursday   </option>
+    			 <option value = 'Friday' > Friday       </option>
+     			 <option value = 'Saturday' > Saturday   </option>
+      			 <option value = 'Sunday' > Sunday       </option>
+			 <input type='submit' value='Add'></form></td>";
+
+        //$showFav .= "<td><a href='addFavtoDay.php?id=".$r['foodname']."'>Add</a></td>";
         $showFav .= "<td><a href='deleteitem.php?id=".$r['foodname']."'>Delete</a></td>";
         $showFav .= "</tr>";
       }
@@ -259,7 +273,7 @@ function douserProfile($username)
   if ($count >= 1)
   { 
       echo "USERS CREDENTIALS VERIFIED"; 
-     $info .= "<br> <table border=5 width = 35% bgcolor='white'>";
+     $info .= "<br> <table style= 'text-align:center;' border=5 width = 35% bgcolor='white'>";
      $info .= "<tr>";
      $info .= "<td>First Name</td>";
      $info .= "<td>Last Name</td>";
@@ -362,7 +376,7 @@ function doShowMealPlan($username, $day)
   if ($count >= 1)
   { 
       echo "USERS CREDENTIALS VERIFIED"; 
-     $showMealPlan .= "<br> <table border=5 width=30% bgcolor='white'>";
+     $showMealPlan .= "<br> <table style= 'text-align:center;' border=5 width=30% bgcolor='white'>";
      $showMealPlan .= "<tr>";
      $showMealPlan .= "<td>Foodname</td>";
      $showMealPlan .= "<td>Calories</td>";
@@ -423,28 +437,28 @@ function dosuggest($username, $day)
   //Getting Suggession for user  
   $query = mysqli_query($mydb,"SELECT foodname, serving, calories from suggest where calories<=$totalCalories ORDER BY RAND() limit 5");
   
-  $showFav = "";
-  $showFav .= "<br> <table border=5 width=30% bgcolor='white'>";
-  $showFav .= "<tr>";
-  $showFav .= "<td>Foodname</td>";
-  $showFav .= "<td>Calories</td>";
-  $showFav .= "<td>Serving</td>";
-  $showFav .= "<td>Add to meal Plan</td>";
-  $showFav .= "</tr>";
+  $addSuggest = "";
+  $addSuggest .= "<br> <table style= 'text-align:center;' border=5 width=30% bgcolor='white'>";
+  $addSuggest .= "<tr>";
+  $addSuggest .= "<td>Foodname</td>";
+  $addSuggest .= "<td>Calories</td>";
+  $addSuggest .= "<td>Serving</td>";
+  $addSuggest .= "<td>Add to<br>Meal Plan</td>";
+  $addSuggest .= "</tr>";
   while($r = mysqli_fetch_array ($query))
   {
     $foodname = $r["foodname"];
     $calories = $r["calories"];
     $serving = $r["serving"];
-    $showFav .= "<tr>";
-    $showFav .= "<td>$foodname</td>";
-    $showFav .= "<td>$calories</td>";
-    $showFav .= "<td>$serving</td>";
-    $showFav .= "<td><a href='addSuggestFood.php?id=".$r['foodname']."'>Add</a></td>";
-    $showFav .= "</tr>";
+    $addSuggest .= "<tr>";
+    $addSuggest .= "<td>$foodname</td>";
+    $addSuggest .= "<td>$calories</td>";
+    $addSuggest .= "<td>$serving</td>";
+    $addSuggest .= "<td><a href='addSuggestFood.php?id=".$r['foodname']."'>Add</a></td>";
+    $addSuggest .= "</tr>";
   }
     
-  return $showFav; 
+  return $addSuggest; 
 }
 
 //Add suggested food to meal plan
